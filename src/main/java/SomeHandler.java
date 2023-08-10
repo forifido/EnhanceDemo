@@ -7,9 +7,9 @@ public class SomeHandler implements MethodInterceptor {
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-        System.out.println("begin");
+        System.out.println(method.getName() + " begin");
         methodProxy.invokeSuper(o, objects);
-        System.out.println("after");
+        System.out.println(method.getName() + " after");
         return null;
     }
 }
