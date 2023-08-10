@@ -29,13 +29,12 @@ public class Main {
         enhancer.setCallbackTypes(new Class[] { MethodInterceptor.class, NoOp.class });
         Class<?> clazz = enhancer.createClass();
 
-        Enhancer.registerCallbacks(clazz, new Callback[] { new SomeHandler(), NoOp.INSTANCE });
+        Enhancer.registerCallbacks(clazz, getDefaultCallbacks());
         call(clazz.newInstance());
 
         // reset another callback
-        Enhancer.registerCallbacks(clazz, new Callback[] { new AnotherHandler(), NoOp.INSTANCE });
+        Enhancer.registerCallbacks(clazz, getAnotherCallbacks());
         call(clazz.newInstance());
-
     }
 
     private static void testSetCallBacksMulitThread()
@@ -44,29 +43,23 @@ public class Main {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(Target.class);
         enhancer.setCallbackFilter(Main::callBackFilter);
-        enhancer.setCallbackTypes(new Class[] { MethodInterceptor.class, NoOp.class });
-        // enhancer1.setCallbackTypes(new Class[] { SomeHandler.class, NoOp.class });
+        enhancer.setCallbackTypes(getCallBackTypes());
         Class<?> clazz = enhancer.createClass();
 
-        Thread thread = getThread(() -> {
+        Thread thread = new Thread(() -> {
             // set callback in another thread
-            Enhancer.registerCallbacks(clazz, new Callback[] { new SomeHandler(), NoOp.INSTANCE });
+            Enhancer.registerCallbacks(clazz, getDefaultCallbacks());
             try {
                 call(clazz.newInstance(), "in sub thread");
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         });
+        thread.start();
         thread.join();
 
+        // not work for this call (thread callbacks)
         call(clazz.newInstance(), "in main thread");
-    }
-
-    private static Thread getThread(Runnable runnable) {
-        Thread thread = new Thread(runnable);
-
-        thread.start();
-        return thread;
     }
 
     public static void call(Object o, String prefix) {
@@ -90,5 +83,18 @@ public class Main {
         } else {
             return 1;
         }
+    }
+
+    private static Callback[] getDefaultCallbacks() {
+        return new Callback[] { new SomeHandler(), NoOp.INSTANCE };
+    }
+
+    private static Callback[] getAnotherCallbacks() {
+        return new Callback[] { new AnotherHandler(), NoOp.INSTANCE };
+    }
+
+    private static Class<?>[] getCallBackTypes() {
+        // return new Class[] { SomeHandler.class, NoOp.class };
+        return new Class[] { MethodInterceptor.class, NoOp.class };
     }
 }
