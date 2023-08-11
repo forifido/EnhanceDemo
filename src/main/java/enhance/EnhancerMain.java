@@ -1,3 +1,5 @@
+package enhance;
+
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -5,7 +7,7 @@ import net.sf.cglib.proxy.NoOp;
 
 import java.lang.reflect.Method;
 
-public class Main {
+public class EnhancerMain {
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, InterruptedException {
         testResetCallbacks();
         testSetCallBacksMulitThread();
@@ -25,7 +27,7 @@ public class Main {
         System.out.println("=== test reset callbacks ===");
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(Target.class);
-        enhancer.setCallbackFilter(Main::callBackFilter);
+        enhancer.setCallbackFilter(EnhancerMain::callBackFilter);
         enhancer.setCallbackTypes(new Class[] { MethodInterceptor.class, NoOp.class });
         Class<?> clazz = enhancer.createClass();
 
@@ -42,7 +44,7 @@ public class Main {
         System.out.println("=== test set call back in different thread ===");
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(Target.class);
-        enhancer.setCallbackFilter(Main::callBackFilter);
+        enhancer.setCallbackFilter(EnhancerMain::callBackFilter);
         enhancer.setCallbackTypes(getCallBackTypes());
         Class<?> clazz = enhancer.createClass();
 
