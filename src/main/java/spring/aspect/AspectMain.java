@@ -12,7 +12,7 @@ public class AspectMain {
         applicationContext.refresh();
 
         TargetBean bean = applicationContext.getBean(TargetBean.class);
-        bean.print();
+        System.out.println(bean.run());
 
         applicationContext.close();
     }

@@ -15,10 +15,11 @@ public class Aspect {
     }
 
     @Around(value = "spring.aspect.PointCuts.pointCut1()")
-    public void around(ProceedingJoinPoint pjp) throws Throwable {
-        System.out.println("[spring.aspect] around advise 1");
-        pjp.proceed();
-        System.out.println("[spring.aspect] around advise2");
+    public String around(ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println("[spring.aspect] around advise begin");
+        Object proceed = pjp.proceed();
+        System.out.println("[spring.aspect] around advise end, old value: " + proceed);
+        return "modified by around";
     }
 
     @AfterReturning(value = "spring.aspect.PointCuts.pointCut1()")
