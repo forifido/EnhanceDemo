@@ -14,7 +14,7 @@ import java.util.Arrays;
  *    4. ? 有上界和下界
  * 泛型类中的静态方法和静态变量不可以使用泛型类所声明的泛型类型参数
  * example:
- *    TypeVariable: T
+ *    TypeVariable: T, T extends Number
  *    ParameterizedType: List<String>, List<?>
  *    GenericArrayType: List<String>[], T[]
  *    WildcardType: ?, ? extend Integer, ? super Integer
