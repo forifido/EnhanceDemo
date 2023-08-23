@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 public class TypeTestMain {
     public static void main(String[] args) throws NoSuchFieldException {
-        // testTypeVariable();
-        // testParameterizedType();
-        // testGenericArrayType();
+        testTypeVariable();
+        testParameterizedType();
+        testGenericArrayType();
         testWildcardType();
     }
 

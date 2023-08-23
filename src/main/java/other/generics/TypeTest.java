@@ -25,7 +25,7 @@ public class TypeTest<T, V extends @Custom @Custom1 Number & @Custom2 Serializab
     }
 
     //泛型方法，泛型参数为Y
-    public <Y extends T> void method(Y y) {
+    public <Y extends T> void method(Y y, T t) {
         t = y;
     }
 }
