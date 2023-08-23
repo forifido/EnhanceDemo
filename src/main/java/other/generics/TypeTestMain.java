@@ -1,5 +1,7 @@
 package other.generics;
 
+import org.springframework.core.ResolvableType;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -67,6 +69,9 @@ public class TypeTestMain {
 
     private static void testGenericArrayType() throws NoSuchFieldException {
         Field tArray = TypeTest.class.getField("tArray");
+        ResolvableType resolvableType = ResolvableType.forField(tArray);
+        Class<?> resolve = resolvableType.getComponentType().resolve();
+
         System.out.println("数组参数类型1:" + tArray.getGenericType());
         Field ltArray = TypeTest.class.getField("ltArray");
         System.out.println("数组参数类型2:" + ltArray.getGenericType());//数组参数类型2:java.util.List<T>[]
@@ -95,9 +100,19 @@ public class TypeTestMain {
     }
 
     public static void test() {
+        // ArrayList
+        System.out.println(Arrays.asList(ArrayList.class.getTypeParameters()));
         Type genericSuperclass = ArrayList.class.getGenericSuperclass();
         if (genericSuperclass instanceof ParameterizedType) {
             System.out.println(Arrays.asList(((ParameterizedType) genericSuperclass).getActualTypeArguments()));
         }
+
+        // TypeTest2
+        System.out.println(Arrays.asList(TypeTest2.class.getTypeParameters()));
+        Type genericSuperclass2 = TypeTest2.class.getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+            System.out.println(Arrays.asList(((ParameterizedType) genericSuperclass2).getActualTypeArguments()));
+        }
+
     }
 }
