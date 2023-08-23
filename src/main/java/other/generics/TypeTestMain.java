@@ -2,10 +2,26 @@ package other.generics;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * T: 某种类型
+ *    1. 类型变量 T 只能出现在 interface/class/method 的声明中
+ *    2. 类型变量 T 所在声明的范围, 用法等价具体类型(class)
+ * ?: 任意类型
+ *    3. ? 只能出现在 字段/变量/函数参数(返回值)的声明中
+ *    4. ? 有上界和下界
+ * 泛型类中的静态方法和静态变量不可以使用泛型类所声明的泛型类型参数
+ * example:
+ *    TypeVariable: T
+ *    ParameterizedType: List<String>, List<?>
+ *    GenericArrayType: List<String>[], T[]
+ *    WildcardType: ?, ? extend Integer, ? super Integer
+ */
 public class TypeTestMain {
     public static void main(String[] args) throws NoSuchFieldException {
+        test();
         testTypeVariable();
         testParameterizedType();
         testGenericArrayType();
@@ -75,6 +91,13 @@ public class TypeTestMain {
             System.out.println(
                     "WildcardType3: lower:" + Arrays.asList(second.getLowerBounds()) + "  upper:" + Arrays.asList(
                             second.getUpperBounds()));//WildcardType3: lower:[]  upper:[class java.lang.Number]
+        }
+    }
+
+    public static void test() {
+        Type genericSuperclass = ArrayList.class.getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+            System.out.println(Arrays.asList(((ParameterizedType) genericSuperclass).getActualTypeArguments()));
         }
     }
 }
