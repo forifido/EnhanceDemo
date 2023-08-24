@@ -114,5 +114,9 @@ public class TypeTestMain {
             System.out.println(Arrays.asList(((ParameterizedType) genericSuperclass2).getActualTypeArguments()));
         }
 
+        ResolvableType resolvableType = ResolvableType.forRawClass(ArrayList.class);
+        ResolvableType superType = resolvableType.getSuperType();
+        ResolvableType[] generics = superType.getGenerics();
+        System.out.println(Arrays.asList(generics));
     }
 }
